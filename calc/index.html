@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Aggregation Viewer</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  </head>
+  <body>
+
+
+  <nav class="navbar">
+    <div class="logo"><a href="/">CVPP</a></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#">Community Network</a>
+      <a href="/calc">DR Calculator</a>
+      <a href="#">Learn</a>
+      <a href="#">Profile</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.toggle("active");
+    }
+  </script>
+
+    <main>
+      <h2>Grid</h2>
+      <p>
+        Location determines value of DR performance, as well as time and frequency of events.
+      </p>
+      <h2>Building</h2>
+      <p>
+        Your building's location and architecture will impact what technologies you can implement.
+      </p>
+      <h2>Baseline</h2>
+        <p>
+          Your behavior is crucial for understanding your DR capacity.
+        </p>
+
+    </main>
+  </body>
+</html>

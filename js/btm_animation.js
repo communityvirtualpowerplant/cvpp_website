@@ -1,5 +1,6 @@
 function setup() {
-  createCanvas(700, 500);
+  let canvas = createCanvas(700, 500);
+  canvas.parent('statusCanvasContainer'); // Attach to the specific div
 }
 
 function draw() {
