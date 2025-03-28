@@ -11,3 +11,6 @@ venv/*
 
 keys.txt
 key.php
+
+
+.env

@@ -1,10 +1,11 @@
 <?php
+
 // ======== CONFIG ========= //
 $table_name = 'sDR_test';
 $base_ID = 'appkbMg8saW21BQKS';
 $valid_key = '12345'; // Key required to access this script
 $third_party_url = 'https://api.airtable.com/v0/' . $base_ID . '/' . $table_name; // The 3rd-party API endpoint
-$third_party_api_key = require('key.php');
+$third_party_api_key = require('key.php'); //best to use a .env file instead, but might be a little tricky on dreamhost with a shared server...
 //========================= //
 
 // Get the key from query or header
