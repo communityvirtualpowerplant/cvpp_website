@@ -106,6 +106,12 @@ main{
   text-decoration: underline;
 }
 
+#site-container{
+  width: 50%;
+  background-color: white;
+  padding: 10px;
+}
+
 /* Mobile Styles */
 @media (max-width: 768px) {
   .nav-links {

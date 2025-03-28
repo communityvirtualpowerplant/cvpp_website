@@ -37,22 +37,27 @@
   </script>
 
     <main>
-      <div id=site-container>
-        <h2>Site</h2>
-
-        <form action="/submit" method="POST">
-          <label for="userInput">Your Site #:</label>
-          <input type="text" id="userInput" name="userInput" required />
-          <button type="submit">Submit</button>
-        </form>
+      <h2>Site Details</h2>
+      <p>
+        network, DR rate, etc.
+      </p>
+      <h2>Status</h2>
+      <div id="statusCanvasContainer"></div>
+      <h2>Baseline</h2>
+      <p>
+        A running estimate of your DR baseline.
+      </p>
+      <h2>Past Performance</h2>
+      <p>
+        <pre id="output"></pre>
+      </p>
+      <h2>Community Benefits</h2>
         <p>
-          <a href="#">Login</a> for full site data
         </p>
-      </div>
 
     </main>
 
     <script src="/js/btm_animation.js"></script>
-
+    <script src="/js/airtable_read.js"></script>
   </body>
 </html>

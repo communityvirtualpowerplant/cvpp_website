@@ -8,3 +8,6 @@ __pycache__/*
 *.csr
 
 venv/*
+
+keys.txt
+key.php
