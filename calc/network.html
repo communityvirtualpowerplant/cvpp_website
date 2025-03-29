@@ -43,15 +43,44 @@
     <main>
         
       <h1>NYC DR Calculator</h1>
+
+      <h2>1) Network</h2>
       <p>
-        This tool is intended to help you understand the DR potential of your household. It provides an estimate for what Con Ed will pay per kW reduction during a DR event. Note that aggregators take a % for their operating expenses and profit.
+        Your network will determine the rate for performance and frequency of events.
       </p>
+      <input type="text" id="searchBox" placeholder="Enter address or lat,lng..." style="margin: 10px; padding: 5px; width: 250px;">
       <p>
-        We will look at your electrical network, household energy consumption, and finally consider the method of DR response and technical options.
+        CSRP rate: <span></span><br>
+        DLRP rate: <span></span><br>
+        Avg frequency in past 5 years: <span></span>
       </p>
+
       <p>
-        <a href="network.html">Get started!</a>
-      </p>       
+        Network borders are outline and color coded by event frequency. Click on a network for more details.
+      </p>
+      <div id="map" style="height: 600px;"></div>
+
+      
+      <h2>2) Baseline</h2>
+        <p>
+          Your behavior is crucial for understanding your DR capacity. Download your energy usage data from Con Ed's website and upload it on the form below, to estimate your baseline.
+        </p>
+
+      <h2>3) Response Method and Technologies</h2>
+      <h3>Methods</h3>
+      <ul>
+        <li>shift</li>
+        <li>replace</li>
+        <li>curtail</li>
+      <p>
+        Your building's location and architecture will impact what technologies you can implement.
+      </p>
+
+      <h3>Solar exposure</h3>
+
+
+
+       
 
     </main>
 
