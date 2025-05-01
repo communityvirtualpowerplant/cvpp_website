@@ -1,22 +1,25 @@
 <?php
 
 // ======== CONFIG ========= //
-$table_name = 'sDR_test';
-$base_ID = 'appkbMg8saW21BQKS';
+$table_name = 'live';
+$base_ID = 'appZI2AenYNrfVqCL';
 $valid_key = '12345'; // Key required to access this script
-$third_party_url = 'https://api.airtable.com/v0/' . $base_ID . '/' . $table_name; // The 3rd-party API endpoint
+$third_party_url = 'https://api.airtable.com/v0/' . $base_ID . '/' . $table_name; // The 3rd-party API endpoint 
+// https://api.airtable.com/v0/appZI2AenYNrfVqCL/analysis
 $third_party_api_key = require('key.php'); //best to use a .env file instead, but might be a little tricky on dreamhost with a shared server...
 //========================= //
 
 // Get the key from query or header
 $client_key = $_GET['key'] ?? $_SERVER['HTTP_X_API_KEY'] ?? null;
+$table_name = $_GET['table'] ?? $_SERVER['table'] ?? null;
 
-// Reject if key is invalid
-if ($client_key !== $valid_key) {
-    http_response_code(403);
-    echo json_encode(["error" => "Unauthorized"]);
-    exit;
-}
+
+// // Reject if key is invalid
+// if ($client_key !== $valid_key) {
+//     http_response_code(403);
+//     echo json_encode(["error" => "Unauthorized"]);
+//     exit;
+// }
 
 // Forward request to third-party API
 $ch = curl_init();
