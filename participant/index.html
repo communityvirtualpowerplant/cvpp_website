@@ -5,56 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Aggregation Viewer</title>
+    <title>CVPP</title>
     <link rel="stylesheet" href="/css/style.css">
 
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
   </head>
   <body>
+    
+    <nav class="navbar">
+        <div class="logo"><a href="/">CVPP</a></div>
+        <div class="nav-links" id="navLinks">
+          <a href="/">Network</a>
+          <a href="/calc">DR Calculator</a>
+          <!-- <a href="/learn">Learn</a>
+          <a href="/profile">Profile</a> -->
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
 
-
-  <nav class="navbar">
-    <div class="logo"><a href="/">CVPP</a></div>
-    <div class="nav-links" id="navLinks">
-      <a href="/community">Community Network</a>
-      <a href="/calc">DR Calculator</a>
-      <a href="/learn">Learn</a>
-      <a href="/profile">Profile</a>
-    </div>
-    <div class="hamburger" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </nav>
-
-  <script>
-    function toggleMenu() {
-      const nav = document.getElementById("navLinks");
-      nav.classList.toggle("active");
-    }
-  </script>
+    <script>
+      function toggleMenu() {
+        const nav = document.getElementById("navLinks");
+        nav.classList.toggle("active");
+      }
+    </script>
 
     <main>
-      <div id=site-container>
-        <h2>Site</h2>
-
-        <form action="/submit" method="POST">
-          <label for="userInput">Your Site #:</label>
-          <input type="text" id="userInput" name="userInput" required />
-          <button type="submit">Submit</button>
-        </form>
-        <p>
-          <a href="#">Login</a> for full site data
-        </p>
+        
+      <p>
+        A Community Virtual Power Plant (CVPP) merges the principles of community energy with virtual power plant (VPP) systems. This website serves as platform for research in developing this concept and applying it in an urban US context. It draws on lessons learned from community solar, electricity co-ops, and community energy systems in the US; balcony solar in Germany; and adhoc electricity networks in Pakistan (among other initiatives) to consider how this may work.
+      </p>
+      <div id="status">
+        Mode: <span id='mode'></span> | Position: <span id='position'></span> | Event Status: <span id='eventStatus'></span>
       </div>
 
-      <div id='participantLive'></div>
+      <div class="image-row">
+        <div class="image-element" id="statusCanvasContainer"></div>
+        <div class="image-element" id="controlLogicContainer">
+          <img id="controlImage" src="/images/smartPowerStation_May1_2025-Controls.png">
+          <div>
+            <a href="#" data-img='/images/smartPowerStation_May1_2025-Controls.png'>Normal Logic</a> | 
+            <a href="#" data-img='/images/smartPowerStation_May1_2025-Controls_Event.png'>Event Logic</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="plotPower"></div>
+      <!-- <div class = plot-container>
+        
+        <div id="plotEnergy"></div>
+      </div>
+ -->
+
+
+<!--         <h3>Demand Response</h3>
+      event upcoming
+      event ongoing/ time remaining
+      commitment % met
+      amount flexed
+      baseline
+      daily specs -->
 
     </main>
 
-    <script src="/js/participant_animation.js"></script>
-
+    <script src="/js/participant_live_data.js"></script>
+    <!-- <script src="/js/control_info.js"></script> -->
+    <!-- <script src="/js/participant_plot_power.js"></script> -->
   </body>
 </html>

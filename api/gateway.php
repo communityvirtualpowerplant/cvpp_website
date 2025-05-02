@@ -1,10 +1,10 @@
 <?php
 
 // ======== CONFIG ========= //
-$table_name = 'live';
+//$table_name = 'live';
 $base_ID = 'appZI2AenYNrfVqCL';
 $valid_key = '12345'; // Key required to access this script
-$third_party_url = 'https://api.airtable.com/v0/' . $base_ID . '/' . $table_name; // The 3rd-party API endpoint 
+
 // https://api.airtable.com/v0/appZI2AenYNrfVqCL/analysis
 $third_party_api_key = require('key.php'); //best to use a .env file instead, but might be a little tricky on dreamhost with a shared server...
 //========================= //
@@ -13,6 +13,7 @@ $third_party_api_key = require('key.php'); //best to use a .env file instead, bu
 $client_key = $_GET['key'] ?? $_SERVER['HTTP_X_API_KEY'] ?? null;
 $table_name = $_GET['table'] ?? $_SERVER['table'] ?? null;
 
+$third_party_url = 'https://api.airtable.com/v0/' . $base_ID . '/' . $table_name; // The 3rd-party API endpoint 
 
 // // Reject if key is invalid
 // if ($client_key !== $valid_key) {

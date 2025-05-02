@@ -1,6 +1,8 @@
 
+// initialize map
 const map = L.map('map').setView([40.75, -73.97], 12);
 
+// add open street map tile
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);

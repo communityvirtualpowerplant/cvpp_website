@@ -1,0 +1,7 @@
+<IfModule mod_headers.c>
+    <Files "gateway.php">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET"
+        Header set Access-Control-Allow-Headers "Content-Type"
+    </Files>
+</IfModule>

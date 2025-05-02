@@ -1,12 +1,12 @@
-let params = new URLSearchParams(document.location.search);
-let name = params.get("name");
+let paramsNow = new URLSearchParams(document.location.search);
+let nameNow = paramsNow.get("name");
 
-getData('/api/gateway.php?table=live')
+getData('https://communityvirtualpowerplant.com/api/gateway.php?table=live')
 setInterval(getData,60000);
 
 function setup() {
   let canvas = createCanvas(700, 500);
-  canvas.parent('participantLive'); // Attach to the specific div 
+  canvas.parent('statusCanvasContainer'); // Attach to the specific div 
 }
 
 function getData(url){
@@ -21,6 +21,7 @@ function getData(url){
       const safeJSON = data.replace(/\bNaN\b/g, 'null');
       data = JSON.parse(safeJSON);
       //console.log('Data received:', data);
+      updateData(data)
       drawSystem(data);
     })
     .catch(error => {
@@ -35,11 +36,11 @@ function drawSystem(data) {
   data = data['records']//[0]['fields']
 
   // Find index where name is
-  const index = data.findIndex(item => item.fields.name === name);
+  const index = data.findIndex(item => item.fields.name === nameNow);
   console.log(index); // Output: 1
 
   data = data[index]['fields']
-  console.log(data)
+  //console.log(data)
 
   background(220);
 
@@ -293,3 +294,45 @@ function drawWire(a,state){
       }
   pop()
 }
+
+
+
+// update live text data
+function updateData(data){
+    data = data['records']//[0]['fields']
+
+    // Find index where name is
+    const index = data.findIndex(item => item.fields.name === nameNow);
+    console.log(index); // Output: 1
+
+    data = data[index]['fields']
+    //console.log(data)
+
+    document.getElementById('mode').textContent = data['mode'];
+    document.getElementById('position').textContent = data['position'];
+
+
+    let eventStatus = '';
+    if (data['event upcoming'] == 1){
+        eventStatus = 'upcoming'
+    } else if (data['event ongoing'] == 1){
+        eventStatus = 'ongoing'
+    } else {
+      eventStatus = 'none'
+    }
+    document.getElementById('eventStatus').textContent = eventStatus;
+}
+
+
+// Control diagram interaction - Wait until DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    const imgElement = document.getElementById('controlImage');
+
+    document.querySelectorAll('a[data-img]').forEach(link => {
+        link.addEventListener('click', event => {
+            event.preventDefault();
+            const filename = event.target.getAttribute('data-img');
+            imgElement.src = `${filename}`;
+        });
+    });
+});

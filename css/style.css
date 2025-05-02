@@ -5,10 +5,11 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-image: url('/images/crownheights-googlemaps-bw.png'); /* Replace with your image path */
+  /*background-image: url('/images/crownheights-googlemaps-bw.png'); /* Replace with your image path */
   background-size: cover;        /* Make image cover full screen */
   background-repeat: no-repeat;  /* Prevent tiling */
   background-position: center;   /* Center the image */
+/*  background-color: lightsalmon;*/
 }
 
 main{
@@ -112,6 +113,64 @@ main{
   padding: 10px;
 }
 
+/*.map-container {
+  display: flex;
+  justify-content: center; 
+  width: 100%;
+    align-content: center;
+}*/
+
+/*#map {
+  height: 100vh;
+  z-index: -1;
+}*/
+
+/*#map {
+  position: relative;
+  
+}*/
+
+
+.image-row {
+    display: flex;
+    justify-content: center; /* center the images */
+    gap: 20px; /* space between images */
+    margin-top: 30px;
+}
+
+.image-row .image-element {
+    max-width: 700px;
+    height: auto;
+    width: auto; /* adjust as needed */
+    /*border: 2px solid #ccc;
+    border-radius: 8px;*/
+}
+
+.image-row .image-element div {
+  display: flex;
+  justify-content: center;
+}
+
+.plot-container {
+  display: flex;
+  justify-content: center; /* center the images */
+  gap: 20px; /* space between images */
+  margin-top: 30px;
+  width: 100%;
+
+}
+
+#status{
+  display: flex;
+  justify-content: center; /* center the images */
+  gap: 20px; /* space between images */
+  width: 100%;
+}
+
+#plotPower{
+  max-width: 95%;
+}
+
 /* Mobile Styles */
 @media (max-width: 768px) {
   .nav-links {
@@ -145,5 +204,14 @@ main{
 
   .footer-section {
     margin: 15px 0;
+  }
+
+  .image-row {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .image-row .image-element{
+      width: 90%;
   }
 }
