@@ -1,9 +1,7 @@
 let paramsDay = new URLSearchParams(document.location.search);
 let nameDay = paramsDay.get("name");
 
-let urlDay = `https://communityvirtualpowerplant.com/api/gateway.php?table=${nameDay}&maxRecords=1000`
-
-// &sort%5B0%5D%5Bfield%5D=datetime&sort%5B0%5D%5Bdirection%5D=desc`
+let urlDay = `https://communityvirtualpowerplant.com/api/gateway.php?table=${nameDay}&maxRecords=1000&view=Grid%20view` //sort%5B0%5D%5Bfield%5D=datetime&sort%5B0%5D%5Bdirection%5D=desc`
 
 getData(urlDay)
 setInterval(getData,60000);
@@ -76,74 +74,87 @@ function getColor(){
   return `rgba(${r},${g},${b},${a})`
 }
 
-// async function fetchAllPages(baseUrl, processPage, extractNextPage) {
-//   let allRecords = [];
-//   let url = baseUrl;
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
-//   while (url) {
-//     const response = await fetch(url);
-//     const data = await response.json();
+async function fetchAllRecords(baseUrl) {
+  const allRecords = [];
+  let offset = null;
+  const pageSize = 100; // Airtable max per page
 
-//     // Add this page's records
-//     const pageRecords = processPage(data);
-//     allRecords.push(...pageRecords);
+  do {
+    try{
+      //let url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}?pageSize=${pageSize}&view=${encodeURIComponent(view)}`;
+      let url = baseUrl
+      if (offset) {
+        url += `&offset=${offset}`;
+      }
 
-//     // Get next page URL or token
-//     url = extractNextPage(data);
-//   }
+      const res = await fetch(url);
 
-//   return allRecords;
-// }
+      if (!res.ok) {
+        break;
+        throw new Error(`Error: ${res.status} - ${await res.text()}`);
+      }
 
-async function fetchAllPages(baseUrl) {
+      const data = await res.json();
+      allRecords.push(...data.records);
+      offset = data.offset;
 
-    const response = await fetch('apiUrlToGetPageNumber');
+      //await sleep(300); // Sleep
+  } catch (err){
+    console.error(`Error fetching Airtable data: ${err.message}`);
+    break;
+  }
 
-    pageCount = (24*30)/100
-    console.log(pageCount)
-    const responses = await Promise.all(
-        Array.from(
-            Array(pageCount),
-            (_, i) => fetch(`apiUrlToSpecificPage?offset=${i}`)
-        )
-    );
-    
-    // do something with processedResponses here
+  } while (offset);
 
+  return allRecords;
 }
 
 
 
-function getData(url){
-  // fetchAllPages(
-  //   url,
-  //   data => data.records,                      // pull data from each page
-  //   data => data.offset                        // get next page token
-  //     ? `${BASE_URL}&offset=${data.offset}`
-  //     : null                                   // stop when no offset
-  // )
-  // //   .then(allRecords => {
-  // //   console.log("Total records:", allRecords.length);
-  // // });
+async function getData(url){
 
-  fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not OK');
+  //fetch(url)
+    // .then(response => {
+    //   if (!response.ok) {
+    //     throw new Error('Network response was not OK');
+    //   }
+    //   return response.text(); // or response.text() if it's plain text
+    // })
+    // .then(data => {
+    //   console.log(data)
+    //   const safeJSON = data.replace(/\bNaN\b/g, 'null');
+    //   data = JSON.parse(safeJSON);
+    //   //console.log('Data received:', data);
+    //   const csv = extractFieldsToCSV(data,'datetime');
+    //   console.log(csv);
+    //   plotCSV(csv)
+    // })
+    // .catch(error => {
+    //   console.error('There was a problem with the fetch:', error);
+    // });
+
+    try {
+      const data = await fetchAllRecords(url);
+
+      if (!data || data.length === 0) {
+        console.warn('No records returned.');
+        return;
       }
-      return response.text(); // or response.text() if it's plain text
-    })
-    .then(data => {
-      const safeJSON = data.replace(/\bNaN\b/g, 'null');
-      data = JSON.parse(safeJSON);
+
+      console.log(data)
+      //const safeJSON = data.replace(/\bNaN\b/g, 'null');
+      //data = JSON.parse(safeJSON);
       //console.log('Data received:', data);
-      const csv = extractFieldsToCSV(data,'datetime');
-      console.log(csv);
-      plotCSV(csv)
-    })
-    .catch(error => {
-      console.error('There was a problem with the fetch:', error);
-    });
+      //const csv = extractFieldsToCSV(data,'datetime');
+      //console.log(csv);
+      plotCSV(data)
+    } catch (error){
+    console.error('There was a problem with getData:', error);
+    }
 }
 
 

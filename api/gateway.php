@@ -15,6 +15,28 @@ $table_name = $_GET['table'] ?? $_SERVER['table'] ?? null;
 
 $third_party_url = 'https://api.airtable.com/v0/' . $base_ID . '/' . $table_name; // The 3rd-party API endpoint 
 
+
+if (isset($_GET['maxRecords'])) {
+    $max_records = $_GET['maxRecords'];
+    $third_party_url = $third_party_url . '?maxRecords=' . $max_records;
+}
+
+if (isset($_GET['view'])) {
+    $view = $_GET['view'];
+    $third_party_url = $third_party_url . '&view=' . urlencode($view);
+}
+
+if (isset($_GET['offset'])) {
+    $offset = $_GET['offset'];
+    $third_party_url = $third_party_url . '&offset=' . $offset;
+}
+
+
+
+
+//&maxRecords=1000&view=Grid%20view
+
+
 // // Reject if key is invalid
 // if ($client_key !== $valid_key) {
 //     http_response_code(403);
