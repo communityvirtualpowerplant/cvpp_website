@@ -214,4 +214,8 @@ main{
   .image-row .image-element{
       width: 90%;
   }
+
+  main{
+    margin: 2px;
+  }
 }
