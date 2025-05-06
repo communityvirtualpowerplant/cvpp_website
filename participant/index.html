@@ -14,13 +14,12 @@
   </head>
   <body>
     
-    <nav class="navbar">
+      <nav class="navbar">
         <div class="logo"><a href="/">CVPP</a></div>
         <div class="nav-links" id="navLinks">
-          <a href="/">Network</a>
+          <a href="/community">Network</a>
           <a href="/calc">DR Calculator</a>
-          <!-- <a href="/learn">Learn</a>
-          <a href="/profile">Profile</a> -->
+          <!-- <a href="/learn">Learn</a>-->
         </div>
         <div class="hamburger" onclick="toggleMenu()">
           <span></span>
@@ -28,6 +27,7 @@
           <span></span>
         </div>
       </nav>
+
 
     <script>
       function toggleMenu() {
@@ -41,8 +41,9 @@
       <p>
         A Community Virtual Power Plant (CVPP) merges the principles of community energy with virtual power plant (VPP) systems. This website serves as platform for research in developing this concept and applying it in an urban US context. It draws on lessons learned from community solar, electricity co-ops, and community energy systems in the US; balcony solar in Germany; and adhoc electricity networks in Pakistan (among other initiatives) to consider how this may work.
       </p>
-      <div id="status">
-        Mode: <span id='mode'></span> | Position: <span id='position'></span> | Event Status: <span id='eventStatus'></span>
+
+    <div id="status">
+        <strong>Live Data: </strong> Name: <span id='name'></span> | Mode: <span id='mode'></span> | Position: <span id='position'></span> | Event Status: <span id='eventStatus'></span>
       </div>
 
       <div class="image-row">
@@ -56,13 +57,10 @@
         </div>
       </div>
 
-
-      <div id="plotPower"></div>
-      <!-- <div class = plot-container>
-        
+      <div class="plot-timeseries"></div>
+        <div id = plotPower></div>
         <div id="plotEnergy"></div>
       </div>
- -->
 
 
 <!--         <h3>Demand Response</h3>
@@ -77,5 +75,30 @@
 
     <script src="/js/participant_live_data.js"></script>
     <script src="/js/participant_plot_power.js"></script>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-section">
+        <h3>About</h3>
+        <p>
+          This site is used for research relating to applying this concept in a US urban context. This is a project of Alex Nathanson, PhD Candidate, at CASE/ RPI.
+        </p>
+      </div>
+      <!-- <div class="footer-section">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Learn</a></li>
+          <li><a href="#">DR</a></li>
+        </ul>
+      </div> -->
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: <a href="mailto:hi@communityvirtualpowerplant.com">info@communityvirtualpowerplant.com</a></p>
+      </div>
+    </footer>
+
+
+
   </body>
 </html>

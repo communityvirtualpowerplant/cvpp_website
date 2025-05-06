@@ -5,55 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Aggregation Viewer</title>
+    <title>CVPP</title>
     <link rel="stylesheet" href="/css/style.css">
 
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script> -->
+    
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <!-- MarkerCluster plugin -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-
+    <script src="//unpkg.com/vue2-leaflet"></script>
+ -->
+     <!-- <link rel="stylesheet" href="//unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="//unpkg.com/vue2-leaflet"></script> -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
   </head>
   <body>
 
 
-  <nav class="navbar">
-      <div class="logo"><a href="/">CVPP</a></div>
-      <div class="nav-links" id="navLinks">
-        <a href="/community">Network</a>
-        <a href="/calc">DR Calculator</a>
-        <!-- <a href="/learn">Learn</a>
-        <a href="/profile">Profile</a> -->
-      </div>
-      <div class="hamburger" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </nav>
+    <nav class="navbar">
+        <div class="logo"><a href="/">CVPP</a></div>
+        <div class="nav-links" id="navLinks">
+          <a href="/community">Network</a>
+          <a href="/calc">DR Calculator</a>
+          <!-- <a href="/learn">Learn</a>-->
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
 
-  <script>
-    function toggleMenu() {
-      const nav = document.getElementById("navLinks");
-      nav.classList.toggle("active");
-    }
-  </script>
+    <script>
+      function toggleMenu() {
+        const nav = document.getElementById("navLinks");
+        nav.classList.toggle("active");
+      }
+    </script>
 
     <main>
+      <p>
+        A Community Virtual Power Plant (CVPP) merges the principles of community energy with virtual power plant (VPP) systems. This website serves as platform for research in developing this concept and applying it in an urban US context. It draws on lessons learned from community solar, electricity co-ops, and community energy systems in the US; balcony solar in Germany; and adhoc electricity networks in Pakistan (among other initiatives) to consider how this may work.
+      </p>
+      
               
       <div class="map-container">
-        <div id="map" style="height: 800px;"></div>
+        <div id="map" style="height: 600px;"></div>
       </div>     
 
     </main>
 
-    <script src="/js/participant_info.js"></script>
 
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-section">
+        <h3>About</h3>
+        <p>
+          This site is used for research relating to applying this concept in a US urban context. This is a project of Alex Nathanson, PhD Candidate, at CASE/ RPI.
+        </p>
+      </div>
+      <!-- <div class="footer-section">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Learn</a></li>
+          <li><a href="#">DR</a></li>
+        </ul>
+      </div> -->
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: <a href="mailto:hi@communityvirtualpowerplant.com">info@communityvirtualpowerplant.com</a></p>
+      </div>
+    </footer>
+
+    <script src="/js/network_info.js"></script>
   </body>
 </html>

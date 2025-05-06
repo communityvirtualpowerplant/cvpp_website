@@ -1,12 +1,48 @@
 let paramsNow = new URLSearchParams(document.location.search);
 let nameNow = paramsNow.get("name");
 
-getData('https://communityvirtualpowerplant.com/api/gateway.php?table=live')
+let endpoint = 'https://communityvirtualpowerplant.com/api/gateway.php?table=live'
+getData(endpoint)
 setInterval(getData,60000);
 
+let myData
+
+let parentElement = 'statusCanvasContainer'
+
 function setup() {
-  let canvas = createCanvas(700, 500);
-  canvas.parent('statusCanvasContainer'); // Attach to the specific div 
+
+  cW = getCanvasWidth()
+  cH = getCanvasHeight(cW) //update if this needs to be dynamic
+
+  let canvas = createCanvas(cW, cH);
+
+  canvas.parent(parentElement); // Attach to the specific div 
+}
+
+function getCanvasWidth(){
+  const pE = document.getElementById(parentElement);
+
+  // console.log(pE.clientWidth)
+  // console.log(pE.parentElement.clientWidth)
+  if (pE.clientWidth == 0){
+    return pE.parentElement.clientWidth * .45
+  } else {
+    return min(pE.clientWidth, (768*.9))
+  }
+}
+
+function getCanvasHeight(w){
+  return 400 * (w / 700)
+}
+
+
+function windowResized() {
+  cW = getCanvasWidth()
+  cH = getCanvasHeight(cW) //update if this needs to be dynamic
+
+  resizeCanvas(cW, cH);
+  //updateData(myData); // Optional: redraw immediately on resize
+  drawSystem(myData);
 }
 
 function getData(url){
@@ -21,23 +57,24 @@ function getData(url){
       const safeJSON = data.replace(/\bNaN\b/g, 'null');
       data = JSON.parse(safeJSON);
       //console.log('Data received:', data);
-      updateData(data)
-      drawSystem(data);
+      myData = data
+      updateData(myData)
+      drawSystem(myData);
     })
     .catch(error => {
       console.error('There was a problem with the fetch:', error);
     });
 }
 
-// function draw() {
-// }
-
 function drawSystem(data) {
+  let cWscaler = cW/700
+  let cHscaler = cH/500
+
   data = data['records']//[0]['fields']
 
   // Find index where name is
   const index = data.findIndex(item => item.fields.name === nameNow);
-  console.log(index); // Output: 1
+  //console.log(index); // Output: 1
 
   data = data[index]['fields']
   //console.log(data)
@@ -47,20 +84,31 @@ function drawSystem(data) {
   let centerH = height/2;
   let centerW = width/2;
   
-  textSize(14);
+  textSize(max(14* cWscaler,11));
   textAlign(CENTER);
   fill(0);
   stroke(0);
   
-  let batWidth = 100
-  let batCenterX = width/2
-  let batHeight = 75
+  // everything is aligned around 5 points on the X-axis
+  let xOne = width * .15
+  let xTwo = (width * .15) + (width * .15)  
+  let xThree = width * .5
+  let xFour = (width * .7)  
+  let xFive = width * .85
+
+  let batWidth = 100 * cWscaler
+  let batCenterX = xThree
+  let batHeight = 75 * cHscaler
   let batCenterY = height/2-batHeight*1.25;
   let batP=data['battery']*0.01
   let batH = 160
+  let circleDiam = 26 * cWscaler
+  let circleDiamCenter = 20 * cWscaler
+
   let relay1H = batCenterY
+  let transferSwitch = 50 * cWscaler
   let smCenterY = height/2+batHeight*1.25;
-  let gridV = data['sensor 1 vac']
+  let gridV = data['grid vac']
   let posOne =data['sensor 1 wac']
   let posTwo = data['sensor 2 wac']
   let posThree = data['sensor 3 wac']
@@ -84,76 +132,77 @@ function drawSystem(data) {
   } else{
     wireBool = false;
   }
-  drawWire([[100, centerH, 200, centerH],[200, centerH, 200, smCenterY],[200, smCenterY, 500, smCenterY],[500, smCenterY, 500, centerH+25]],wireBool);// Grid to transfer switch
+  drawWire([[xOne, centerH, xTwo, centerH],[xTwo, centerH, xTwo, smCenterY],[xTwo, smCenterY, xFour, smCenterY],[xFour, smCenterY, xFour, centerH]],wireBool);// Grid to transfer switch
 
   if (posTwo > 0){
     wireBool = true;
   } else{
     wireBool = false;
   }
-  drawWire([[100, centerH, 200, centerH],[200, centerH, 200, batCenterY],[200, batCenterY, batCenterX-batWidth/2, batCenterY]],wireBool); // Grid to battery
+  drawWire([[xOne, centerH, xTwo, centerH],[xTwo, centerH, xTwo, batCenterY],[xTwo, batCenterY, batCenterX-batWidth/2, batCenterY]],wireBool); // Grid to battery
  
   if (posThree > 0){
     wireBool = true;
   } else{
     wireBool = false;
   }
-  drawWire([[batCenterX+batWidth/2, batCenterY, 500, batCenterY],[500, batCenterY, 500, centerH-25]],wireBool); // Battery to transfer switch
+  drawWire([[batCenterX+batWidth/2, batCenterY, xFour, batCenterY],[xFour, batCenterY, xFour, centerH]],wireBool); // Battery to transfer switch
   
   if (posOne > 0 || posThree > 0 ){
     wireBool = true;
   } else{
     wireBool = false;
   }
-  drawWire([[525, centerH, 590, centerH]],wireBool); // transfer switch to Load
+  drawWire([[xFour, centerH, xFive, centerH]],wireBool); // transfer switch to Load
 
   if (posFour > 0){
     wireBool = true;
   } else{
     wireBool = false;
   }
-  drawWire([[90, pvH, batCenterX-batWidth/2, pvH]],wireBool); // PV to battery
+  drawWire([[xOne, pvH, batCenterX-batWidth/2, pvH]],wireBool); // PV to battery
   
+
   push()
     // Draw grid power source
     // Draw PV source
     if(posOne > 0 || posTwo > 0 || gridV > 0){
       fill(200, 150, 255)
       noStroke()
-      circle(90, centerH, 26); // PV Source Box
+      circle(xOne, centerH, circleDiam); // grid indicator
     }
     strokeWeight(2);
     fill(150);
     stroke(0);
-    circle(90, centerH, 20); // Grid Source Box
+    circle(xOne, centerH, circleDiamCenter); // Grid Source Box
     fill(0);
-    underText("Grid\n"+ gridV +" VAC", 90, centerH+20);
+    underText("Grid\n"+ gridV +" VAC", xOne, centerH+(20*cWscaler));
 
     // Draw PV source
     if(posFour > 0){
       fill(200, 150, 255)
       noStroke()
-      circle(90, pvH, 26); // PV Source Box
+      circle(xOne, pvH, circleDiam); // PV Source Box
     }
     fill(150);
     strokeWeight(2);
     stroke(0);
-    circle(90, pvH, 20); // PV Source Box
+    circle(xOne, pvH, circleDiamCenter); // PV Source Box
     fill(0);
-    underText("PV", 90, pvH+20);
+    underText("PV", xOne, pvH+(15*cWscaler));
     
     // Draw load (maybe also highlight load if gridV is available and posOne is open)
     if(posOne > 0 || posThree > 0){
       fill(200, 150, 255)
       noStroke();
-      circle(600, centerH, 26); // PV Source Box
+      circle(xFive, centerH, circleDiam); // load indicator
     }
     strokeWeight(2);
     fill(150);
     stroke(0);
-    circle(600, centerH, 20); // Grid Source Box
+    circle(xFive, centerH, circleDiamCenter); // Grid Source Box
     fill(0);
-    underText("Load\n" +loadW +" Watts", 600, centerH+20);
+    underText("Load\n" +loadW +" Watts", xFive, centerH+20);
   pop();
  
   // Draw battery system
@@ -171,37 +220,37 @@ function drawSystem(data) {
    // Draw Smart Relay 1
   rectMode(CENTER);
   fill(255)
-  rect(200, batCenterY, 10,10); // Battery Box
-  leftText("P2: " + posTwo +"W", 190, batCenterY);
+  rect(xTwo, batCenterY, 10,10); // Battery Box
+  leftText("P2: " + posTwo +"W", xTwo, batCenterY);
   fill(200)
-  triangle(195, batCenterY+5, 200, batCenterY-5, 205, batCenterY+5);
+  triangle(xTwo-5, batCenterY+5, xTwo, batCenterY-5, xTwo+5, batCenterY+5);
 
   // Draw Smart Relay 2
   rectMode(CENTER);
   fill(255)
-  rect(200, smCenterY, 10,10); // Battery Box
-  leftText("P1: " + posOne + "W", 190, smCenterY);
+  rect(xTwo, smCenterY, 10,10); // Battery Box
+  leftText("P1: " + posOne + "W", xTwo, smCenterY);
   fill(200)
-  triangle(195, smCenterY+5, 200, smCenterY-5, 205, smCenterY+5);
+  triangle(xTwo-5, smCenterY+5, xTwo, smCenterY-5, xTwo + 5, smCenterY+5);
 
   // Draw Smart Relay 3
   rectMode(CENTER);
   fill(255)
-  rect(500, batCenterY, 10,10); // Battery Box
-  leftText("P3: " + posThree+"W", 500, batCenterY-20);
+  rect(xFour, batCenterY, 10,10); // Battery Box
+  leftText("P3: " + posThree+"W", xFour, batCenterY-30);
 
   // Draw Sensor 4
   rectMode(CENTER);
   fill(255)
-  rect(200, pvH, 10,10); // Box
-  leftText("P4: " + posFour+"W", 200, pvH-20);
+  rect(xTwo, pvH, 10,10); // Box
+  leftText("P4: " + posFour+"W", xTwo, pvH-30);
 
   // Draw Transfer Switch
   push()
     rectMode(CENTER);
     stroke(0)
     fill(150)
-    rect(500, centerH, 50,50); // Battery Box
+    rect(xFour, centerH, transferSwitch,transferSwitch); // Battery Box
     noFill()
     let angleS = 0;
     let angleE = HALF_PI;
@@ -209,29 +258,31 @@ function drawSystem(data) {
       angleE = 0
       angleS = PI+HALF_PI
     }
+    tsRad = transferSwitch* .8
     if (posOne > 0 || posThree > 0){ 
       stroke(200, 150, 255);
       strokeWeight(6);
-      arc(500, centerH, 40, 40, angleS,angleE);
+      arc(xFour, centerH, tsRad, tsRad, angleS,angleE);
     }
     stroke(0)
     strokeWeight(2);
-    arc(500, centerH, 40, 40, angleS,angleE);
-    leftText("Transfer\n Switch", 470, centerH);
+    arc(xFour, centerH, tsRad, tsRad, angleS,angleE);
+    leftText("Transfer\n Switch", xFour- 5, centerH + 15);
   pop()
 
-  textAlign(CENTER,CENTER)
-  fill(0) 
-  noStroke()
-  textSize(20)
-  text("Demand Response Behind-The-Meter (BTM) System", centerW, 50);
+  // textAlign(CENTER,CENTER)
+  // fill(0) 
+  // noStroke()
+  // textSize(20)
+  // text("Demand Response Behind-The-Meter (BTM) System", centerW, 50);
   
     drawKey()
 }
 
 function drawKey(){
   push()
-    textSize(14);
+    textAlign(CENTER,CENTER)
+    //textSize(14);
 
     rectMode(CENTER);
     stroke(0)
@@ -268,9 +319,9 @@ function underText(t,x,y){
 function leftText(t,x,y){
   push()
     noStroke();
-    textAlign(RIGHT);
+    textAlign(RIGHT,TOP);
     fill(0);
-    text(t, x,y);
+    text(t, x,y+10);
     fill(150);
   pop()
 }
@@ -310,6 +361,7 @@ function updateData(data){
 
     document.getElementById('mode').textContent = data['mode'];
     document.getElementById('position').textContent = data['position'];
+    document.getElementById('name').textContent = data['name'];
 
 
     let eventStatus = '';

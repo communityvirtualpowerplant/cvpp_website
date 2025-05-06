@@ -4,29 +4,7 @@ let nameDay = paramsDay.get("name");
 let urlDay = `https://communityvirtualpowerplant.com/api/gateway.php?table=${nameDay}&maxRecords=1000&view=Grid%20view` //sort%5B0%5D%5Bfield%5D=datetime&sort%5B0%5D%5Bdirection%5D=desc`
 
 getData(urlDay)
-setInterval(getData,60000);
-
-//const apiUrl = '/api/data?file=recent';
-
-// function extractFieldsToCSV(json) {
-//   const records = json.records.map(rec => rec.fields);
-
-//   if (!records.length) return '';
-
-//   const headers = Object.keys(records[0]);
-//   const csvRows = [headers.join(',')];
-
-//   for (const row of records) {
-//     const values = headers.map(key => {
-//       const value = row[key] ?? '';
-//       // Escape double quotes
-//       return value//`${value.toString().replace(/"/g, '""')}`;
-//     });
-//     csvRows.push(values.join(','));
-//   }
-
-//   return csvRows.join('\n');
-// }
+//setInterval(getData,60000);
 
 function extractFieldsToCSV(json, sortByKey = null, ascending = true) {
   console.log(json)
@@ -63,7 +41,6 @@ function extractFieldsToCSV(json, sortByKey = null, ascending = true) {
 
   return csvRows.join('\n');
 }
-
 
 function getColor(){
   // get colors between 20-240
@@ -114,28 +91,7 @@ async function fetchAllRecords(baseUrl) {
 }
 
 
-
 async function getData(url){
-
-  //fetch(url)
-    // .then(response => {
-    //   if (!response.ok) {
-    //     throw new Error('Network response was not OK');
-    //   }
-    //   return response.text(); // or response.text() if it's plain text
-    // })
-    // .then(data => {
-    //   console.log(data)
-    //   const safeJSON = data.replace(/\bNaN\b/g, 'null');
-    //   data = JSON.parse(safeJSON);
-    //   //console.log('Data received:', data);
-    //   const csv = extractFieldsToCSV(data,'datetime');
-    //   console.log(csv);
-    //   plotCSV(csv)
-    // })
-    // .catch(error => {
-    //   console.error('There was a problem with the fetch:', error);
-    // });
 
     try {
       const data = await fetchAllRecords(url);
@@ -146,27 +102,14 @@ async function getData(url){
       }
 
       console.log(data)
-      //const safeJSON = data.replace(/\bNaN\b/g, 'null');
-      //data = JSON.parse(safeJSON);
-      //console.log('Data received:', data);
-      //const csv = extractFieldsToCSV(data,'datetime');
-      //console.log(csv);
-      plotCSV(data)
+      plotDicts(data)
     } catch (error){
     console.error('There was a problem with getData:', error);
     }
 }
 
-
-
-async function plotCSV(csvText) {
+async function plotDicts(data) {
   try {
-    // const response = await fetch(apiUrl);
-    // const csvText = await response.text();
-
-    // Parse CSV manually
-    const rows = csvText.trim().split('\n').map(row => row.split(','));
-    const headers = rows.shift();
 
     // Assuming the first column is X (e.g., Date) and second column is Y (e.g., Value)
     const datetime = [];
@@ -174,18 +117,20 @@ async function plotCSV(csvText) {
     const y = {}
     const positionData = []
 
-
+    // merge the different dictionaries into one massive one
     cols.forEach(c=>{
           y[c] = []
         })
 
-    rows.forEach(row => {
-      datetime.push(row[0]);
-      positionData.push(row[headers.indexOf('position')])
+    data.forEach(row => {
+      let fields =  row['fields']
+      datetime.push(fields['datetime']);
+
+      positionData.push(fields['position'])
       cols.forEach(c=>{
         // get col position
-        let i = headers.indexOf(c); 
-        let v = parseFloat(row[i])
+        //let i = headers.indexOf(c); 
+        let v = parseFloat(fields[c])
         y[c].push(isNaN(v) ? null : v)
       })
       //y.push(parseFloat(row[1]));
@@ -207,7 +152,7 @@ async function plotCSV(csvText) {
       }
     })
 
-    console.log(positionColors)
+    //console.log(positionColors)
 
     // Create background rectangles where mode changes
     let lastPosition = null;
@@ -274,7 +219,6 @@ async function plotCSV(csvText) {
       } : {})
     }));
 
-
     ///////////////////////////////////////////
     //********** CREATE DATA TRACES***********/
     ///////////////////////////////////////////
@@ -306,6 +250,8 @@ async function plotCSV(csvText) {
         orientation: 'v',
         traceorder: 'grouped'
       }
+      // ,
+      // responsive: true
     });
   } catch (error) {
     console.error('Error fetching or plotting CSV:', error);

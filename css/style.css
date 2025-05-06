@@ -133,25 +133,33 @@ main{
 
 .image-row {
     display: flex;
+    flex-direction: row;
     justify-content: center; /* center the images */
     gap: 20px; /* space between images */
     margin-top: 30px;
+    width: 100%;
 }
 
 .image-row .image-element {
     max-width: 700px;
+    width: 50%;
     height: auto;
-    width: auto; /* adjust as needed */
     /*border: 2px solid #ccc;
     border-radius: 8px;*/
 }
 
-.image-row .image-element div {
-  display: flex;
-  justify-content: center;
+.image-element img{
+    width: 100%;
+    height: auto;
 }
 
-.plot-container {
+/*#statusCanvasContainer{
+  width: 100%;
+}*/
+
+
+
+.plot-timeseries {
   display: flex;
   justify-content: center; /* center the images */
   gap: 20px; /* space between images */
@@ -168,6 +176,10 @@ main{
 }
 
 #plotPower{
+  max-width: 95%;
+}
+
+#plot-energy{
   max-width: 95%;
 }
 
@@ -213,6 +225,11 @@ main{
 
   .image-row .image-element{
       width: 95%;
+  }
+
+  .image-element img{
+      width: 100%;
+      height: auto;
   }
 
   main{
